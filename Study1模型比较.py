@@ -8,6 +8,7 @@ from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
+from hyperopt import hp, fmin, tpe, Trials, STATUS_OK
 
 # 设置Seaborn样式
 sns.set(style="whitegrid")
@@ -40,6 +41,30 @@ models = {
     'Random Forest': RandomForestRegressor(n_estimators=100, random_state=42),
     'Gradient Boosting': GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42)
 }
+
+# Hyperopt setup for Gradient Boosting
+space = {
+    'n_estimators': hp.choice('n_estimators', range(20, 201, 10)),
+    'learning_rate': hp.loguniform('learning_rate', np.log(0.01), np.log(0.2)),
+    'max_depth': hp.choice('max_depth', range(3, 14, 1)),
+    'subsample': hp.uniform('subsample', 0.5, 1.0),
+    'min_samples_split': hp.choice('min_samples_split', range(2, 11, 1)),
+    'min_samples_leaf': hp.choice('min_samples_leaf', range(1, 15, 1)),
+    'random_state': 42
+}
+
+def objective(params):
+    model = GradientBoostingRegressor(**params)
+    score = cross_val_score(model, X_train, y_train, scoring='neg_mean_squared_error', cv=5).mean()
+    return {'loss': -score, 'status': STATUS_OK}
+
+trials = Trials()
+best_params = fmin(fn=objective, space=space, algo=tpe.suggest, max_evals=100, trials=trials)
+best_params['n_estimators'] += 20
+best_params['max_depth'] += 3
+best_params['min_samples_split'] += 2
+best_params['min_samples_leaf'] += 1
+models['Gradient Boosting'] = GradientBoostingRegressor(**best_params)
 
 # K折交叉验证设置
 kf = KFold(n_splits=5, shuffle=True, random_state=42)
