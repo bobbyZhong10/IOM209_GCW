@@ -59,7 +59,7 @@ def objective(params):
     return {'loss': -score, 'status': STATUS_OK}
 
 trials = Trials()
-best_params = fmin(fn=objective, space=space, algo=tpe.suggest, max_evals=100, trials=trials)
+best_params = fmin(fn=objective, space=space, algo=tpe.suggest, max_evals=500, trials=trials)
 best_params['n_estimators'] += 20
 best_params['max_depth'] += 3
 best_params['min_samples_split'] += 2
