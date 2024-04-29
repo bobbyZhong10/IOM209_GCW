@@ -46,7 +46,7 @@ def calculate_adjusted_emotion_score_handle_zero_neutral(A, B, C, a, b):
 
 data['Analyst_emotion'] = data.apply(
     lambda row: calculate_adjusted_emotion_score_handle_zero_neutral(
-        row['Numpstisten_A'], row['Numnegasten_A'], row['Numneusten_A'], a, b
+        row['Numpstisten_A'], row['Numneusten_A'], row['Numnegasten_A'], a, b
     ) if not pd.isnull(row['Numpstisten_A']) and not pd.isnull(row['Numnegasten_A']) and not pd.isnull(row['Numneusten_A']) else np.nan,
     axis=1
 )
@@ -54,4 +54,4 @@ data['Analyst_emotion'] = data.apply(
 # 输出到新的CSV文件
 output_columns = original_columns + ['GB_emotion', 'Analyst_emotion']  # 使用原始列顺序，添加新列至末尾
 output_data = data[output_columns]
-output_data.to_csv('study1.2.csv', index=False)
+output_data.to_csv('study1.3.csv', index=False)
