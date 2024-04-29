@@ -68,7 +68,7 @@ if not data_with_analyst.empty:
 
     # Run the algorithm
     trials = Trials()
-    best_params = fmin(fn=objective, space=space, algo=tpe.suggest, max_evals=100, trials=trials)
+    best_params = fmin(fn=objective, space=space, algo=tpe.suggest, max_evals=200, trials=trials)
     best_params['n_estimators'] += 20  # correct zero-based index
     best_params['max_depth'] += 3
     best_params['min_samples_split'] += 2
