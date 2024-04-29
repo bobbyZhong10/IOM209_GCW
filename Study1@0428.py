@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 import statsmodels.api as sm
 
 # 读取数据
-data_path = 'panel data.csv'
+data_path = 'PanelData@0429.csv'
 data = pd.read_csv(data_path)
 original_columns = data.columns.tolist()  # 保存原始列的顺序
 

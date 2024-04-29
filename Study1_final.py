@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 import statsmodels.api as sm
 
 # 读取数据
-data_path = 'panel data.csv'
+data_path = 'PanelData@0429.csv'
 data = pd.read_csv(data_path)
 original_columns = data.columns.tolist()  # 保存原始列的顺序
 
@@ -54,4 +54,4 @@ data['Analyst_emotion'] = data.apply(
 # 输出到新的CSV文件
 output_columns = original_columns + ['GB_emotion', 'Analyst_emotion']  # 使用原始列顺序，添加新列至末尾
 output_data = data[output_columns]
-output_data.to_csv('study1.3.csv', index=False)
+output_data.to_csv('study1_final_all.csv', index=False)
