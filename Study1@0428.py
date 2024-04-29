@@ -26,29 +26,29 @@ if data[gb_columns].notna().all(axis=1).any():
                          (data['Pospostnum_G'] + data['Negpostnum_G'] + data['Neupostnum_G'])
 
 # 准备PCA分析
-transformer = FunctionTransformer(np.log1p, validate=True)
-X_transformed = transformer.fit_transform(data.loc[data[gb_columns].notna().all(axis=1), gb_columns])
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X_transformed)
-pca = PCA(n_components=2)
-PCs = pca.fit_transform(X_scaled)
+#transformer = FunctionTransformer(np.log1p, validate=True)
+#X_transformed = transformer.fit_transform(data.loc[data[gb_columns].notna().all(axis=1), gb_columns])
+#scaler = StandardScaler()
+#X_scaled = scaler.fit_transform(X_transformed)
+#pca = PCA(n_components=2)
+#PCs = pca.fit_transform(X_scaled)
 
 # 创建exog
-exog = pd.DataFrame(PCs, columns=['PC1', 'PC2'], index=data.loc[data[gb_columns].notna().all(axis=1)].index)
-exog = sm.add_constant(exog)
+#exog = pd.DataFrame(PCs, columns=['PC1', 'PC2'], index=data.loc[data[gb_columns].notna().all(axis=1)].index)
+#exog = sm.add_constant(exog)
 
 # 筛选数据
-data_with_analyst = data[data[analyst_columns].notna().all(axis=1) & data['Wretnd'].notna()]
-if not data_with_analyst.empty:
-    X, y = exog.loc[data_with_analyst.index], data_with_analyst['Wretnd']
+#data_with_analyst = data[data[analyst_columns].notna().all(axis=1) & data['Wretnd'].notna()]
+#if not data_with_analyst.empty:
+ #   X, y = exog.loc[data_with_analyst.index], data_with_analyst['Wretnd']
 
     # 梯度提升机
-    gbm_model = GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42)
-    gbm_model.fit(X, y)
-    data['Analyst_emotion_GBM'] = np.nan
-    data.loc[data_with_analyst.index, 'Analyst_emotion_GBM'] = gbm_model.predict(X)
+#   gbm_model.fit(X, y)
+#    data['Analyst_emotion_GBM'] = np.nan
+#    data.loc[data_with_analyst.index, 'Analyst_emotion_GBM'] = gbm_model.predict(X)
 
 # 输出到新的CSV文件
 output_columns = original_columns + ['GB_emotion', 'Analyst_emotion_GBM']  # 使用原始列顺序，添加新列至末尾
 output_data = data[output_columns]
 output_data.to_csv('study1.csv', index=False)
+
