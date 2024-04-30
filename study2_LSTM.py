@@ -2,7 +2,11 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from tensorflow.keras.models import Sequential, load_model
+import tensorflow as tf
+
+Sequential = tf.keras.models.Sequential
+load_model = tf.keras.models.load_model
+
 from tensorflow.keras.layers import LSTM, Dense, Dropout
 
 # 加载数据
@@ -46,7 +50,7 @@ performance = model.evaluate(X_test, y_test)
 print("Test Loss:", performance)
 
 # 保存模型
-model.save('my_model.h5')
+model.save('my_model.keras')
 
 # 预测函数
 def predict_with_model(model_path, scaler, new_data):
