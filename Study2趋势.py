@@ -26,3 +26,27 @@ plt.ylabel('值')
 plt.legend()
 plt.grid(True)
 plt.show()
+
+
+# #延后一周
+# # 按周进行重采样，计算平均值
+# weekly_avg = data.resample('W').mean()
+#
+# # 放大GB_emotion的值
+# weekly_avg['GB_emotion_scaled'] = weekly_avg['GB_emotion'] * 10
+#
+# # 将sz_50延后一周
+# weekly_avg['sz_50_lagged'] = weekly_avg['sz_50'].shift(-1)
+#
+# # 绘制GB_emotion与延后的sz_50
+# plt.figure(figsize=(14, 7))
+# plt.plot(weekly_avg.index, weekly_avg['sz_50_lagged'], label='Lagged Average sz_50', color='blue')
+# plt.plot(weekly_avg.index, weekly_avg['GB_emotion_scaled'], label='Scaled Average GB_emotion (x10)', color='red')
+# plt.title('Comparison of Scaled GB_emotion vs. Lagged sz_50 (2014-2016)')
+# plt.xlabel('Date')
+# plt.ylabel('Value')
+# plt.legend()
+# plt.grid(True)
+# # 保存图表为PNG文件
+# plt.savefig('fig2.png', format='png')
+# plt.show()
