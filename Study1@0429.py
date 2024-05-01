@@ -80,7 +80,7 @@ if not data_with_analyst.empty:
     data['Analyst_emotion_GBM'] = np.nan
     data.loc[data_with_analyst.index, 'Analyst_emotion_GBM'] = gbm_model.predict(X)
 
-# Output to new CSV file
+# Output to new CSV
 output_columns = original_columns + ['GB_emotion', 'Analyst_emotion_GBM']
 output_data = data[output_columns]
 output_data.to_csv('study1_tuned.csv', index=False)

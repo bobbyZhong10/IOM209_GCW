@@ -42,7 +42,7 @@ models = {
     'Gradient Boosting': GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42)
 }
 
-# Hyperopt setup for Gradient Boosting
+# Hyperopt setup for Gradient Boosting 调优
 space = {
     'n_estimators': hp.choice('n_estimators', range(20, 201, 10)),
     'learning_rate': hp.loguniform('learning_rate', np.log(0.01), np.log(0.2)),
