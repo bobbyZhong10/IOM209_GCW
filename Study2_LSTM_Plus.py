@@ -31,7 +31,7 @@ features_scaled = scaler.fit_transform(features)
 features_scaled = np.reshape(features_scaled, (features_scaled.shape[0], 1, features_scaled.shape[1]))
 
 # K折交叉验证设置
-kf = KFold(n_splits=5, shuffle=True, random_state=42)
+kf = KFold(n_splits=10, shuffle=True, random_state=42)
 results = []
 
 # 记录最后一次迭代的 y_test 和 y_pred
@@ -40,12 +40,17 @@ last_y_pred = None
 
 
 def objective(trial):
+    global last_y_test, last_y_pred  # 声明全局变量
+
     # 定义模型参数搜索空间
     lstm_units = trial.suggest_categorical('lstm_units', [20, 50, 100])
     dropout_rate = trial.suggest_uniform('dropout_rate', 0.1, 0.5)
     learning_rate = trial.suggest_loguniform('learning_rate', 1e-5, 1e-1)
 
     local_results = []
+    best_model = None
+    best_loss = np.inf
+
     for train_index, test_index in kf.split(features_scaled):
         X_train, X_test = features_scaled[train_index], features_scaled[test_index]
         y_train, y_test = target.iloc[train_index], target.iloc[test_index]
@@ -61,8 +66,13 @@ def objective(trial):
         optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
         model.compile(loss='mean_squared_error', optimizer=optimizer)
 
-        # 训练模型
-        model.fit(X_train, y_train, validation_split=0.2, epochs=100, batch_size=32, verbose=0)
+        # 训练模型(修改epochs来修改迭代次数）
+        history = model.fit(X_train, y_train, validation_split=0.2, epochs=5, batch_size=32, verbose=0)
+        val_loss = history.history['val_loss'][-1]
+
+        if val_loss < best_loss:
+            best_loss = val_loss
+            best_model = model
 
         # 评估模型
         mse = model.evaluate(X_test, y_test, verbose=0)
@@ -71,8 +81,11 @@ def objective(trial):
         r2 = r2_score(y_test, y_pred)
 
         local_results.append((mse, rmse, r2))
-        last_y_test = y_test
-        last_y_pred = y_pred
+
+    # 使用最佳模型进行预测
+    if best_model:
+        last_y_test = target
+        last_y_pred = best_model.predict(features_scaled)
 
     average_results = np.mean(local_results, axis=0)
     results.append(average_results)
@@ -80,7 +93,7 @@ def objective(trial):
 
 
 study = optuna.create_study(direction='minimize')
-study.optimize(objective, n_trials=50)
+study.optimize(objective, n_trials=5)
 
 print('Best trial:', study.best_trial.params)
 
@@ -89,12 +102,16 @@ average_mse, average_rmse, average_r2 = np.mean(results, axis=0)
 print(f"Average MSE: {average_mse}, Average RMSE: {average_rmse}, Average R^2: {average_r2}")
 
 # 绘制预测与实际结果图
-plt.figure(figsize=(10, 5))
-plt.plot(last_y_test.index, last_y_test, label='Actual', color='blue', linewidth=2)
-plt.plot(last_y_test.index, last_y_pred, label='Predicted', linestyle='--', color='red', linewidth=2)
-plt.title('Weekly Portfolio Returns: Actual vs Predicted')
-plt.xlabel('Date')
-plt.ylabel('Sum of Weekly Returns')
-plt.legend()
-plt.grid(True)
-plt.show()
+if last_y_test is not None and last_y_pred is not None:
+    plt.figure(figsize=(10, 5))
+    plt.plot(last_y_test.index, last_y_test, label='Actual', color='blue', linewidth=2)
+    plt.plot(last_y_test.index, last_y_pred, label='Predicted', linestyle='--', color='red', linewidth=2)
+    plt.title('Weekly Portfolio Returns: Actual vs Predicted')
+    plt.xlabel('Date')
+    plt.ylabel('Sum of Weekly Returns')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+else:
+    print("Error: last_y_test or last_y_pred is None.")
+

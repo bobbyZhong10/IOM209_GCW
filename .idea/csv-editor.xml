@@ -38,13 +38,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\study1_tuned.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
       </map>
     </option>
   </component>
