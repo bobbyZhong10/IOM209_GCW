@@ -56,7 +56,7 @@ for train_index, test_index in kf.split(features_scaled):
     early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
 
     # Train model
-    model.fit(X_train, y_train, validation_split=0.2, epochs=100, batch_size=32, verbose=0, callbacks=[reduce_lr, early_stopping])
+    model.fit(X_train, y_train, validation_split=0.2, epochs=200, batch_size=32, verbose=0, callbacks=[reduce_lr, early_stopping])
 
     # Evaluate model
     y_pred = model.predict(X_test)

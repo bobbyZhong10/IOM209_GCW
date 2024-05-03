@@ -31,6 +31,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\study1_final_all.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\study1_tuned.csv">
           <value>
             <Attribute>
