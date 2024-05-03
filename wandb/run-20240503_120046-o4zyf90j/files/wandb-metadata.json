@@ -1,0 +1,34 @@
+{
+    "os": "macOS-14.4.1-arm64-arm-64bit",
+    "python": "3.10.9",
+    "heartbeatAt": "2024-05-03T04:00:49.261428",
+    "startedAt": "2024-05-03T04:00:46.891720",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/Users/bobby/Library/Mobile Documents/com~apple~CloudDocs/Study/XJTLU/AY23-24/Y3S2/IOM209/IOM209 GCW/Study/LSTM_Plus.py",
+    "codePath": "LSTM_Plus.py",
+    "git": {
+        "remote": "https://github.com/bobbyZhong10/IOM209_GCW.git",
+        "commit": "0045c3ed05ed63d781bb32c02ba734c7525a6a83"
+    },
+    "email": "126168729+bobbyZhong10@users.noreply.github.com",
+    "root": "/Users/bobby/Library/Mobile Documents/com~apple~CloudDocs/Study/XJTLU/AY23-24/Y3S2/IOM209/IOM209 GCW/Study",
+    "host": "Bobby-Chungs-MacBook-Pro.local",
+    "username": "bobby",
+    "executable": "/Users/bobby/anaconda3/bin/python",
+    "cpu_count": 8,
+    "cpu_count_logical": 8,
+    "disk": {
+        "total": 460.4317207336426,
+        "used": 363.51296615600586
+    },
+    "gpuapple": {
+        "type": "arm",
+        "vendor": "Apple"
+    },
+    "memory": {
+        "total": 16.0
+    }
+}
