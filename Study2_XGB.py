@@ -3,10 +3,8 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.impute import KNNImputer
-import tensorflow as tf
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import GRU, Dense
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
+import xgboost as xgb
 
 # Load data
 data_path = 'study1_final_all.csv'
@@ -38,26 +36,17 @@ features_test = test_data[['GB_emotion']].copy()
 features_test['GB_emotion'] = imputer.transform(features_test[['GB_emotion']].values.reshape(-1, 1))
 features_scaled_test = scaler.transform(features_test)
 
-# Reshape for GRU input
-features_scaled_train = np.reshape(features_scaled_train, (features_scaled_train.shape[0], 1, 1))
-features_scaled_test = np.reshape(features_scaled_test, (features_scaled_test.shape[0], 1, 1))
-
 # Target variable handling for train and test sets
 target_train = train_data['Wretnd'].values
 target_test = test_data['Wretnd'].values
 
-# Building GRU model
-model = Sequential([
-    GRU(32, input_shape=(1, 1), return_sequences=True),
-    Dense(1)
-])
-model.compile(optimizer='adam', loss='mse')
-
-# Train the model
-model.fit(features_scaled_train, target_train, epochs=10, verbose=1)
+# Initialize and train XGBoost model
+model = xgb.XGBRegressor(objective ='reg:squarederror', colsample_bytree = 0.3, learning_rate = 0.1,
+                max_depth = 5, alpha = 10, n_estimators = 10)
+model.fit(features_scaled_train, target_train)
 
 # Predict on test data
-y_pred = model.predict(features_scaled_test).flatten()
+y_pred = model.predict(features_scaled_test)
 
 # Evaluate the model
 mse = mean_squared_error(target_test, y_pred)
