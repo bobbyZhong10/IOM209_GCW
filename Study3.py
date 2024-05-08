@@ -20,6 +20,7 @@ correlation_matrix = weekly_data[['SVI_code', 'SVI_All', 'GB_emotion', 'Analyst_
 plt.figure(figsize=(8, 6))
 sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f")
 plt.title('Heatmap of Correlation Coefficients between Emotions and Search Volumes')
+plt.savefig('s3.png')
 plt.show()
 
 # Perform Engle-Granger cointegration test

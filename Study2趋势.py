@@ -13,30 +13,13 @@ data.set_index('Date', inplace=True)
 weekly_data = data.resample('W').mean()
 weekly_data['Analyst_emotion'].fillna(0, inplace=True)
 
-# # 绘制情绪得分和股指回报率的折线图
-# plt.figure(figsize=(14, 8))
-# plt.plot(weekly_data.index, weekly_data['GB_emotion'], label='GB_emotion（普通投资者情绪得分）', color='blue')
-# plt.plot(weekly_data.index, weekly_data['Analyst_emotion'], label='Analyst_emotion（分析师情绪得分）', color='red')
-# plt.plot(weekly_data.index, weekly_data['sz_all'], label='Shanghai Index Return（上证指数回报率）', color='green')
-# plt.plot(weekly_data.index, weekly_data['sz_50'], label='Shanghai 50 Return（上证50回报率）', color='purple')
-#
-# plt.title('2014-2016年每周投资者情绪与上证指数回报率的趋势')
-# plt.xlabel('日期')
-# plt.ylabel('值')
-# plt.legend()
-# plt.grid(True)
-# plt.show()
-
-
-# #延后一周
 # 按周进行重采样，计算平均值
 weekly_avg = data.resample('W').mean()
 
 # 放大GB_emotion的值
 weekly_avg['GB_emotion_scaled'] = weekly_avg['GB_emotion'] * 10
 
-# # 将sz_50延后一周
-# weekly_avg['sz_50_lagged'] = weekly_avg['sz_50'].shift(-1)
+weekly_avg['sz_50_lagged'] = weekly_avg['sz_50']
 
 # 绘制GB_emotion与延后的sz_50
 plt.figure(figsize=(14, 7))
