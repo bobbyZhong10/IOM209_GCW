@@ -1,0 +1,1 @@
+This is a repository of the IOM 209 course group assignments from AY24-24, International Business School Suzhou, Xi 'an Jiaotong Liverpool University, where we adopted a machine learning approach to analyze investor sentiment in China
